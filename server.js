@@ -1,3 +1,4 @@
+const cors = require("cors");
 const express = require("express");
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
@@ -12,6 +13,9 @@ const port = process.env.PORT;
 
 // Middleware
 app.use(express.json());
+
+// app.use(cors);
+app.use(cors({ origin: "*" }));
 
 // Swagger configuration
 const swaggerOptions = {
@@ -37,9 +41,11 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 // Routes
 const categoryRoutes = require("./routes/categories");
 const productRoutes = require("./routes/products");
-app.use("/api/products", productRoutes);
+const cartRoutes = require("./routes/carts");
 
 app.use("/api/category", categoryRoutes);
+app.use("/api/products", productRoutes);
+app.use("/api/carts", cartRoutes);
 
 // Sync database and start server
 sequelize
